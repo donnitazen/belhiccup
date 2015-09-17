@@ -40,6 +40,7 @@
 (defn- asset-js
   []
   (hc/html (hp/include-js "/js/vendor/jquery.js")
+           (hp/include-js "/js/vendor/fastclick.js")
            (hp/include-js "/js/foundation.min.js")
            (hp/include-js "/js/app.js")))
 
