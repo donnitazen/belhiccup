@@ -119,15 +119,16 @@
 
 (defn article
   [id]
-  (hp/html5 (head)
-            [:body {:class "row"}
-             (header)
-             [:div {:class "large-6 columns"}
-              [:h3  (str "Title" ((show-one-article id) :title))]
-              [:h4 (str "Number" ((show-one-article id) :article-id))]
-              [:h5 (str "Content" ((show-one-article id) :text))]]
-             (footer)
-             (asset-js)]))
+  (let [the-article (show-one-article id)]
+    (hp/html5 (head)
+              [:body {:class "row"}
+               (header)
+               [:div {:class "large-6 columns"}
+                [:h3  (str "Title: " (the-article :title))]
+                [:h4 (str "Number: " (the-article :article-id))]
+                [:h5 (str "Content: \n" (the-article :text))]]
+               (footer)
+               (asset-js)])))
 
 
 
