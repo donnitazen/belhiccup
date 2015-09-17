@@ -9,5 +9,7 @@
   (routes
     (GET "/" req (page/home))
     (GET "/contact" req (page/contact))
+    (GET "/article" req (page/articles))
+    (GET "/article/:id" [id] (page/article id))
     (resources "public/")
     (not-found "Not found")))

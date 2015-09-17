@@ -34,7 +34,7 @@
              [:section
               [:ul {:class "left"}
                [:li
-                [:a {:href "#"} "Second nav"]]]
+                [:a {:href "/article"} "Articles"]]]
               ]]]))
 
 (defn- asset-js
@@ -90,4 +90,44 @@
                  [:p "Contact me plzzzz"]]
                 (footer)
                 (asset-js)]))
+
+(defn read-article-file
+  [filename]
+  (->> (read-string (slurp (str "resources/data/" filename)))))
+
+(defn show-all-articles
+  [id title]
+  (hc/html [:li
+            [:a {:href (str "/article/" id)}
+             title]]))
+
+(defn show-one-article
+  [id]
+  (-> (read-article-file "articles.edn")
+       (get-in [(dec (read-string id))])))
+
+(defn articles
+  []
+  (hp/html5 (head)
+            [:body {:class "row"}
+             (header)
+             [:ul
+              (->> (read-article-file "articles.edn")
+                   (map #(show-all-articles (% :article-id) (% :title)) ))]
+             (footer)
+             (asset-js)]))
+
+(defn article
+  [id]
+  (hp/html5 (head)
+            [:body {:class "row"}
+             (header)
+             [:div {:class "large-6 columns"}
+              [:h3  (str "Title" ((show-one-article id) :title))]
+              [:h4 (str "Number" ((show-one-article id) :article-id))]
+              [:h5 (str "Content" ((show-one-article id) :text))]]
+             (footer)
+             (asset-js)]))
+
+
 
