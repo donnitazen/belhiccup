@@ -12,5 +12,5 @@
      (hp/include-css "/css/foundation.min.css")]
     [:body
      [:center
-      [:h1 "Hellooooww world!"]]]))
+      [:h1 "Helloooow world!"]]]))
 
