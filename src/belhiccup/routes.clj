@@ -2,3 +2,5 @@
   (:require
     [compojure.core :refer [routes GET POST context]]
     [compojure.route :refer [not-found resources]]))
+
+;(def all-routes)
