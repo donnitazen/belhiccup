@@ -8,5 +8,6 @@
   []
   (routes
     (GET "/" req (page/home))
+    (GET "/contact" req (page/contact))
     (resources "public/")
     (not-found "Not found")))

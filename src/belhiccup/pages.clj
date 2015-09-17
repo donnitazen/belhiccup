@@ -29,7 +29,7 @@
              [:ul
               [:li {:class "name"}
                [:h2
-                [:a {:href "#"} "Logo"]]]
+                [:a {:href "/"} "Logo"]]]
               ]
              [:section
               [:ul {:class "left"}
@@ -47,6 +47,8 @@
   []
   (hc/html [:footer {:class ".two.columns"}
             [:hr]
+            [:p
+             [:a {:href "/contact"} "Contact Us"]]
             [:p "Copyright 2015 Beleje can be Cute as well"]]))
 
 (defn- body
@@ -78,4 +80,13 @@
                 (footer)
                 (asset-js)
                 ]))
+
+(defn contact
+  [] (hp/html5 (head)
+               [:body {:class "row"}
+                (header)
+                [:center
+                 [:p "Contact me plzzzz"]]
+                (footer)
+                (asset-js)]))
 
