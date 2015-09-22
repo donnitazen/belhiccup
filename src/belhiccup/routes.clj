@@ -9,7 +9,8 @@
   (routes
     (GET "/" req (page/home))
     (GET "/contact" req (page/contact))
-    (GET "/article" req (page/articles))
-    (GET "/article/:id" [id] (page/article id))
+    (GET "/articles" req (page/articles))
+    (GET "/article/:id" req
+      (page/article (get-in req [:params :id])))
     (resources "public/")
     (not-found "Not found")))
