@@ -1,134 +1,98 @@
 (ns belhiccup.pages
   (:require
     [hiccup.core :as hc]
-    [hiccup.page :as hp]))
+    [hiccup.page :as hp]
+    [belhiccup.articles :as art]))
+
+(defn- head
+  [title]
+  [:head
+   [:title title]
+   [:meta {:charset "utf-8"}]
+   [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"}]
+   [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"}]
+   [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"}]])
+
+(defn- header
+  []
+  [:header
+   [:ul {:class "nav nav-pills"}
+    [:li {:role "presentation"}
+     [:a {:href "/"} "Belhiccup"]]
+    [:li {:role "presentation"}
+     [:a {:href "/articles"} "Articles"]]]])
+
+(defn- body
+  [anything]
+  [:body {:class "container"}
+   [:div {:class "row"}
+    (header)]
+   anything
+   [:div {:class "row"}
+    (footer)]])
+
+(defn- footer
+  []
+  [:div {:class "panel-footer"}
+   [:div {:class "col-md-3"}
+    [:a {:href "/contact"} "Contact Me"]]])
 
 (defn home
   []
   (hp/html5
-    [:head
-     [:meta {:charset "utf-8"}]
-     (hp/include-css "/css/normalize.css")
-     (hp/include-css "/css/foundation.min.css")]
-    [:body
-     [:center
-      [:h1 "Helloooow world!"]]]))
-
-(defn- head
-  []
-  (hc/html [:head
-            [:meta {:charset "utf-8"}]
-            (hp/include-css "/css/normalize.css")
-            (hp/include-css "/css/foundation.min.css")
-            ]))
-
-(defn- header
-  []
-  (hc/html [:header {:class "large-12"}
-            [:nav {:class "top-bar"}
-             [:ul
-              [:li {:class "name"}
-               [:h2
-                [:a {:href "/"} "Logo"]]]
-              ]
-             [:section
-              [:ul {:class "left"}
-               [:li
-                [:a {:href "/article"} "Articles"]]]
-              ]]]))
-
-(defn- asset-js
-  []
-  (hc/html (hp/include-js "/js/vendor/jquery.js")
-           (hp/include-js "/js/vendor/fastclick.js")
-           (hp/include-js "/js/foundation.min.js")
-           (hp/include-js "/js/app.js")))
-
-(defn- footer
-  []
-  (hc/html [:footer {:class ".two.columns"}
-            [:hr]
-            [:p
-             [:a {:href "/contact"} "Contact Us"]]
-            [:p "Copyright 2015 Beleje can be Cute as well"]]))
-
-(defn- body
-  []
-  (hc/html [:div {:class "large-12 columns"}
-            [:h1 "Aloha"]
-            [:div {:class "large-12 columns"}
-             [:h1 "My Friends' Photographs"]
-             (map cute-pic-space
-                  ["pic-title-1" "pic-title-2" "pic-title-3"]
-                  ["pic 1" "pic 2" "pic 3"])]
-            [:div {:class "large-12 columns"}
-             [:h1 "My Friends' Bank Accounts"]]]))
-
-(defn- cute-pic-space
-  [title image]
-  (hc/html
-    [:div.large-4.column
-     [:h4 title]
-     [:p image]]))
-
-
-
-(defn home
-  [] (hp/html5 (head)
-               [:body {:class "row"}
-                (header)
-                (body)
-                (footer)
-                (asset-js)
-                ]))
+   (head "Belhiccup - Home")
+   (body [:div {:class "row"}
+          [:div {:class "jumbotron"}
+           [:h1 "This should be a cool jumbo pictures"]]
+          [:p "body"]])))
 
 (defn contact
-  [] (hp/html5 (head)
-               [:body {:class "row"}
-                (header)
-                [:center
-                 [:p "Contact me plzzzz"]]
-                (footer)
-                (asset-js)]))
+  []
+  (hp/html5
+   (head "Belhiccup - Contact")
+   (body [:div {:class "row"}
+          [:p "just call"]])))
 
-(defn read-article-file
-  [filename]
-  (->> (read-string (slurp (str "resources/data/" filename)))))
-
-(defn show-all-articles
-  [id title]
-  (hc/html [:li
-            [:a {:href (str "/article/" id)}
-             title]]))
-
-(defn show-one-article
-  [id]
-  (-> (read-article-file "articles.edn")
-       (get-in [(dec (read-string id))])))
+(defn map-all-articles
+  []
+  (for [art (art/read-article-file "articles.edn")]
+    [:li {:role "presentation"}
+     [:a {:href (str "/article/" (art :article-id))} (art :title)]]))
 
 (defn articles
   []
-  (hp/html5 (head)
-            [:body {:class "row"}
-             (header)
-             [:ul
-              (->> (read-article-file "articles.edn")
-                   (map #(show-all-articles (% :article-id) (% :title)) ))]
-             (footer)
-             (asset-js)]))
+  (hp/html5
+   (head "Belhiccup All Articles")
+   (body [:div {:class "row"}
+          [:div {:class "col-md-2"}
+           [:ul {:class "nav nav-pills nav-stacked"}
+            (map-all-articles)]]
+          [:div {:class "col-md-10"}
+           [:h3 "Some cool quotes to seize the day"]
+           [:button {:type "submit"
+                     :class "btn btn-default"}
+            "Add an article"]]])))
+
 
 (defn article
   [id]
-  (let [the-article (show-one-article id)]
-    (hp/html5 (head)
-              [:body {:class "row"}
-               (header)
-               [:div {:class "large-6 columns"}
-                [:h3  (str "Title: " (the-article :title))]
-                [:h4 (str "Number: " (the-article :article-id))]
-                [:h5 (str "Content: \n" (the-article :text))]]
-               (footer)
-               (asset-js)])))
+  (let [the-article (art/show-one-article id)]
+    (println the-article)
+    (hp/html5
+     (head (str "article #" id))
+     (body [:div {:class "row"}
+            [:div {:class "col-md-2"}
+             [:ul {:class "nav nav-pills nav-stacked"}
+              (map-all-articles)]]
+            [:div {:class "col-md-10"}
+             [:h2 (str "Title: " (the-article :title))]
+             [:br]
+             [:h4 (str "Article #" (the-article :article-id))]
+             [:br]
+             [:h5 (str "Content: " (the-article :text))]
+             [:br]]]))))
+
+
 
 
 
