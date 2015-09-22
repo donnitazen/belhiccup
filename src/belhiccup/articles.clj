@@ -17,6 +17,7 @@
   (let [all-articles (read-article-file "articles.edn")
         new-id (inc (read-string (:article-id (last all-articles))))
         new-article {:title (article :title) :text (article :content) :article-id (str new-id)}]
-    (assoc-in all-articles [(count all-articles)] new-article)))
+    (spit "resources/data/articles.edn" (conj all-articles new-article))
+    new-id))
 
 

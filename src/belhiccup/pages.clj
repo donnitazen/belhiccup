@@ -65,23 +65,23 @@
    [:form {:role "form" :action "/add-article" :method "post"}
     [:div {:class "form-group"}
      [:label {:for "title"} "Title :"]
-     [:input {:type "text" :class "form-control" :placeholder "short title please"}]]
+     [:input {:name "title" :type "text" :class "form-control" :placeholder "short title please"}]]
     [:div {:class "form-group"}
      [:label {:for "content"} "Content :"]
-     [:textarea {:cols "30" :rows "10" :placeholder "shorter content" :class "form-control"}]]
+     [:textarea {:name "content" :cols "30" :rows "10" :placeholder "shorter content" :class "form-control"}]]
     [:div {:class "form-group"}
-     [:button {:type "submit" :class "btn btn-success"} "add an article"]]]])
+     [:button {:type "submit" :class "btn btn-success"} "Add an Article"]]]])
 
 (defn articles
   []
   (hp/html5 (head "Belhiccup All Articles")
-           (body [:div {:class "row"}
-                  [:div {:class "col-md-2"}
-                   [:ul {:class "nav nav-pills nav-stacked"}
-                    (map-all-articles)]]
-                  [:div {:class "col-md-10"}
-                   [:h3 "\"Some cool quotes to seize the day\""]
-                   (article-form)]])))
+            (body [:div {:class "row"}
+                   [:div {:class "col-md-2"}
+                    [:ul {:class "nav nav-pills nav-stacked"}
+                     (map-all-articles)]]
+                   [:div {:class "col-md-10"}
+                    [:h3 "\"Some cool quotes to seize the day\""]
+                    (article-form)]])))
 
 
 (defn article
