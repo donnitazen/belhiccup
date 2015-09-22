@@ -57,6 +57,21 @@
     [:li {:role "presentation"}
      [:a {:href (str "/article/" (arts :article-id))} (arts :title)]]))
 
+
+(defn article-form
+  []
+  [:div {:class "col-md-6"}
+   [:h2 "Add an article?"]
+   [:form {:role "form" :action "/add-article" :method "post"}
+    [:div {:class "form-group"}
+     [:label {:for "title"} "Title :"]
+     [:input {:type "text" :class "form-control" :placeholder "short title please"}]]
+    [:div {:class "form-group"}
+     [:label {:for "content"} "Content :"]
+     [:textarea {:cols "30" :rows "10" :placeholder "shorter content" :class "form-control"}]]
+    [:div {:class "form-group"}
+     [:button {:type "submit" :class "btn btn-success"} "add an article"]]]])
+
 (defn articles
   []
   (hp/html5 (head "Belhiccup All Articles")
@@ -65,10 +80,8 @@
                    [:ul {:class "nav nav-pills nav-stacked"}
                     (map-all-articles)]]
                   [:div {:class "col-md-10"}
-                   [:h3 "Some cool quotes to seize the day"]
-                   [:button {:type "submit"
-                             :class "btn btn-default"}
-                    "Add an article"]]])))
+                   [:h3 "\"Some cool quotes to seize the day\""]
+                   (article-form)]])))
 
 
 (defn article
@@ -85,8 +98,8 @@
                       [:h4 (str "Article #" (the-article :article-id))]
                       [:br]
                       [:h5 (str "Content: " (the-article :text))]
-                      [:br]]]))))
-
+                      [:br]
+                      (article-form)]]))))
 
 
 
