@@ -6,36 +6,36 @@
 
 (defn- head
   [title]
-  (hc/html [:head
-            [:title title]
-            [:meta {:charset "utf-8"}]
-            [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"}]
-            [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"}]
-            [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"}]]))
+  [:head
+   [:title title]
+   [:meta {:charset "utf-8"}]
+   [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"}]
+   [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"}]
+   [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"}]])
 
 (defn- header
   []
-  (hc/html [:header
-            [:ul {:class "nav nav-pills"}
-             [:li {:role "presentation"}
-              [:a {:href "/"} "Belhiccup"]]
-             [:li {:role "presentation"}
-              [:a {:href "/articles"} "Articles"]]]]))
+  [:header
+   [:ul {:class "nav nav-pills"}
+    [:li {:role "presentation"}
+     [:a {:href "/"} "Belhiccup"]]
+    [:li {:role "presentation"}
+     [:a {:href "/articles"} "Articles"]]]])
 
 (defn- body
   [anything]
-  (hc/html [:body {:class "container"}
-            [:div {:class "row"}
-             (header)]
-            anything
-            [:div {:class "row"}
-             (footer)]]))
+  [:body {:class "container"}
+   [:div {:class "row"}
+    (header)]
+   anything
+   [:div {:class "row"}
+    (footer)]])
 
 (defn- footer
   []
-  (hc/html [:div {:class "panel-footer"}
-            [:div {:class "col-md-3"}
-             [:a {:href "/contact"} "Contact Me"]]]))
+  [:div {:class "panel-footer"}
+   [:div {:class "col-md-3"}
+    [:a {:href "/contact"} "Contact Me"]]])
 
 (defn home
   []
@@ -53,11 +53,9 @@
 
 (defn map-all-articles
   []
-  (hc/html
-    (for [arts (art/read-article-file "articles.edn")
-                 ]
-             (#(vector :li {:role "presentation"}
-                       (vector :a {:href (str "/article/" (% :article-id))} (% :title))) arts))))
+  (for [arts (art/read-article-file "articles.edn")]
+    [:li {:role "presentation"}
+     [:a {:href (str "/article/" (arts :article-id))} (arts :title)]]))
 
 (defn articles
   []
@@ -76,7 +74,6 @@
 (defn article
   [id]
   (let [the-article (art/show-one-article id)]
-    (println the-article)
     (hp/html5 (head (str "article #" id))
               (body [:div {:class "row"}
                      [:div {:class "col-md-2"}
