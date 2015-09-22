@@ -67,7 +67,10 @@
                    [:ul {:class "nav nav-pills nav-stacked"}
                     (map-all-articles)]]
                   [:div {:class "col-md-10"}
-                   [:h3 "Some cool quotes to seize the day"]]])))
+                   [:h3 "Some cool quotes to seize the day"]
+                   [:button {:type "submit"
+                             :class "btn btn-default"}
+                    "Add an article"]]])))
 
 
 (defn article
